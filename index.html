@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Tienda</title>
+    <title>Importadora García</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -11,63 +11,75 @@
 
     <!-- Navegación -->
     <nav class="bg-black text-white p-4 flex justify-between items-center px-6">
-        <h1 class="text-xl font-bold tracking-widest">MI TIENDA</h1>
+        <h1 class="text-xl font-bold tracking-widest">IMPORTADORA GARCÍA</h1>
         <div class="space-x-4">
             <button onclick="filterCategory('todos')" class="hover:text-gray-400">Todos</button>
-            <button onclick="filterCategory('calzado')" class="hover:text-gray-400">Calzado</button>
-            <button onclick="filterCategory('ropa')" class="hover:text-gray-400">Ropa</button>
+            <button onclick="filterCategory('accesorios')" class="hover:text-gray-400">Accesorios</button>
         </div>
     </nav>
 
     <!-- Encabezado / Banner -->
     <header class="bg-black text-white text-center py-12 px-4">
-        <h2 class="text-4xl font-extrabold uppercase">Colección Exclusiva</h2>
-        <p class="text-gray-400 mt-2">Estilo, calidad y diseño en un solo lugar.</p>
+        <h2 class="text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
+        <p class="text-gray-400 mt-2">Productos de alta calidad al mejor precio.</p>
     </header>
 
     <!-- Catálogo de Productos -->
     <main class="max-w-6xl mx-auto py-10 px-4">
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Los productos se cargan aquí mediante JavaScript -->
+            <!-- Los productos se cargan dinámicamente aquí -->
         </div>
     </main>
 
-    <!-- Código de tus Productos y Lógica -->
+    <!-- Código de Productos y Funcionalidad -->
     <script>
-        // TUS PRODUCTOS CONFIGURADOS:
+        // LISTA DE PRODUCTOS CON TUS 6 FOTOS SUBIDAS
+        const products = [
             {
-    const products = [
-    {
-        id: 1,
-        name: "Termo Térmico de Acero Inoxidable",
-        category: "accesorios",
-        price: 25,
-        images: [
-            "termos.png",
-            "termos 1.png",
-            "termos 2.png",
-            "termos 3.png",
-            "termos 4.png",
-            "termos 5.png"
-        ],
-        description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño."
-    }
-];
+                id: 1,
+                name: "Termo Térmico de Acero Inoxidable",
+                category: "accesorios",
+                price: 5,
+                images: [
+                    "termos.png",
+                    "termos 1.png",
+                    "termos 2.png",
+                    "termos 3.png",
+                    "termos 4.png",
+                    "termos 5.png"
+                ],
+                description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño."
+            }
         ];
 
-        // Función para mostrar productos en la pantalla
+        // Función para renderizar las tarjetas y las miniaturas
         function renderProducts(items) {
             const container = document.getElementById('product-grid');
             container.innerHTML = '';
             
             items.forEach(product => {
+                let thumbnailsHTML = '';
+                product.images.forEach((img) => {
+                    thumbnailsHTML += `
+                        <img src="${img}" 
+                             onclick="changeImage(${product.id}, '${img}')" 
+                             class="w-12 h-12 object-cover rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2">
+                    `;
+                });
+
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                        <img id="main-img-${product.id}" src="${product.images[0]}" alt="${product.name}" class="w-full h-64 object-cover">
+                        
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
                                 <span class="text-xs uppercase bg-gray-200 text-gray-700 px-2 py-1 rounded">${product.category}</span>
                                 <h3 class="text-lg font-bold mt-2">${product.name}</h3>
+                                
+                                <div class="flex flex-wrap my-2">
+                                    ${thumbnailsHTML}
+                                </div>
+
                                 <p class="text-gray-600 text-sm mt-1">${product.description}</p>
                             </div>
                             <div class="mt-4 flex items-center justify-between">
@@ -81,7 +93,12 @@
             });
         }
 
-        // Función para filtrar categorías
+        // Función para cambiar la foto principal al hacer clic en una miniatura
+        function changeImage(productId, newSrc) {
+            document.getElementById(`main-img-${productId}`).src = newSrc;
+        }
+
+        // Filtrado por categoría
         function filterCategory(cat) {
             if (cat === 'todos') {
                 renderProducts(products);
@@ -91,7 +108,7 @@
             }
         }
 
-        // Cargar productos al abrir la página
+        // Carga inicial
         renderProducts(products);
     </script>
 </body>
