@@ -10,16 +10,18 @@
 <body class="bg-gray-100 font-sans text-gray-900">
 
     <!-- Navegación -->
-    <nav class="bg-black text-white p-4 flex justify-between items-center px-6">
+    <nav class="bg-black text-white p-4 flex flex-wrap justify-between items-center px-6 gap-2">
         <h1 class="text-xl font-bold tracking-widest">IMPORTADORA GARCÍA</h1>
-        <div class="space-x-4">
+        <div class="space-x-2 sm:space-x-4 text-sm sm:text-base">
             <button onclick="filterCategory('todos')" class="hover:text-gray-400">Todos</button>
-            <button onclick="filterCategory('accesorios')" class="hover:text-gray-400">Accesorios</button>
+            <button onclick="filterCategory('accesorios')" class="hover:text-gray-400">Termos</button>
+            <button onclick="filterCategory('pijamas')" class="hover:text-gray-400">Pijamas</button>
+            <button onclick="filterCategory('calcetines')" class="hover:text-gray-400">Calcetines</button>
         </div>
     </nav>
 
     <!-- Banner -->
-    <header class="bg-black text-white text-center py-12 px-4">
+    <header class="bg-black text-white text-center py-12 px-4 border-t border-gray-800">
         <h2 class="text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
         <p class="text-gray-400 mt-2">Productos de alta calidad al mejor precio.</p>
     </header>
@@ -45,17 +47,41 @@
             {
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
-                category: "uso personal",
-                price: 5,
+                category: "accesorios",
+                price: 25,
                 images: [
                     "./Termos.png",
-                    "./Termo1.png",
-                    "./Termo2.png",
-                    "./Termo3.png",
-                    "./Termo4.png",
-                    "./Termo5.png"
+                    "./Termos 1.png",
+                    "./Termos 2.png",
+                    "./Termos 3.png",
+                    "./Termos 4.png",
+                    "./Termos 5.png"
                 ],
                 description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño."
+            },
+            {
+                id: 2,
+                name: "Pijama Térmica de Algodón",
+                category: "pijamas",
+                price: 18,
+                images: [
+                    "./pijama 1.png",
+                    "./pijama 2.png",
+                    "./pijama 3.png",
+                    "./pijama 4.png",
+                    "./pijama 5.png"
+                ],
+                description: "Pijama ultra suave y cómoda, ideal para noches frescas. Tela de alta calidad."
+            },
+            {
+                id: 3,
+                name: "Pack de Calcetines Afelpados",
+                category: "calcetines",
+                price: 8,
+                images: [
+                    "./Medias1.png"
+                ],
+                description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad."
             }
         ];
 
@@ -72,6 +98,11 @@
                              class="w-12 h-12 object-contain rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2 bg-gray-50">
                     `;
                 });
+
+                // Número de WhatsApp configurado (+503 6967 9021)
+                const phone = "50369679021";
+                const message = encodeURIComponent(`Hola, me interesa comprar el producto: ${product.name}`);
+                const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
@@ -93,7 +124,9 @@
                             </div>
                             <div class="mt-4 flex items-center justify-between">
                                 <span class="text-xl font-extrabold">$${product.price}</span>
-                                <a href="https://wa.me/?text=Hola,%20me%20interesa%20comprar%20el%20producto:%20${encodeURIComponent(product.name)}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Pedir por WhatsApp</a>
+                                <a href="${whatsappUrl}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition flex items-center gap-2">
+                                    <i class="fab font-bold"></i> Pedir por WhatsApp
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -102,12 +135,10 @@
             });
         }
 
-        // Cambiar la foto principal con las miniaturas
         function changeImage(productId, newSrc) {
             document.getElementById(`main-img-${productId}`).src = newSrc;
         }
 
-        // Funciones para abrir y cerrar la foto ampliada
         function openModal(imgSrc) {
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-img');
@@ -122,7 +153,6 @@
             modal.classList.remove('flex');
         }
 
-        // Filtro por categorías
         function filterCategory(cat) {
             if (cat === 'todos') {
                 renderProducts(products);
@@ -135,4 +165,4 @@
         renderProducts(products);
     </script>
 </body>
-</html>
+    </html>
