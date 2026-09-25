@@ -1,18 +1,97 @@
-let products = [
-    {
-        id: 1,
-        name: "pantuflas ",
-        category: "calzado",
-        price: 5,00,
-        image: "IMG-20260919-WA0072.jpg",
-        description: "Diseño dinámico con la mejor amortiguación."
-    },
-    {
-        id: 2,
-        name: "luces navideñas",
-        category: "accesorios para el hogar",
-        price: 5,00,
-        image: "IMG-20260919-WA0066.jpg",
-        description: "luces navideñas par adornar tu hogar de exelente calidad."
-    }
-];
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <!-- Navegación -->
+    <nav class="bg-black text-white p-4 flex justify-between items-center px-6">
+        <h1 class="text-xl font-bold tracking-widest">MI TIENDA</h1>
+        <div class="space-x-4">
+            <button onclick="filterCategory('todos')" class="hover:text-gray-400">Todos</button>
+            <button onclick="filterCategory('calzado')" class="hover:text-gray-400">Calzado</button>
+            <button onclick="filterCategory('ropa')" class="hover:text-gray-400">Ropa</button>
+        </div>
+    </nav>
+
+    <!-- Encabezado / Banner -->
+    <header class="bg-black text-white text-center py-12 px-4">
+        <h2 class="text-4xl font-extrabold uppercase">Colección Exclusiva</h2>
+        <p class="text-gray-400 mt-2">Estilo, calidad y diseño en un solo lugar.</p>
+    </header>
+
+    <!-- Catálogo de Productos -->
+    <main class="max-w-6xl mx-auto py-10 px-4">
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Los productos se cargan aquí mediante JavaScript -->
+        </div>
+    </main>
+
+    <!-- Código de tus Productos y Lógica -->
+    <script>
+        // TUS PRODUCTOS CONFIGURADOS:
+        const products = [
+            {
+                id: 1,
+                name: "Air Max Pulse",
+                category: "calzado",
+                price: 150,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+                description: "Diseño dinámico con la mejor amortiguación."
+            },
+            {
+                id: 2,
+                name: "Playera Sportswear",
+                category: "ropa",
+                price: 45,
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
+                description: "Algodón suave para uso diario y deportivo."
+            }
+        ];
+
+        // Función para mostrar productos en la pantalla
+        function renderProducts(items) {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '';
+            
+            items.forEach(product => {
+                const card = `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs uppercase bg-gray-200 text-gray-700 px-2 py-1 rounded">${product.category}</span>
+                                <h3 class="text-lg font-bold mt-2">${product.name}</h3>
+                                <p class="text-gray-600 text-sm mt-1">${product.description}</p>
+                            </div>
+                            <div class="mt-4 flex items-center justify-between">
+                                <span class="text-xl font-extrabold">$${product.price}</span>
+                                <a href="https://wa.me/?text=Hola,%20me%20interesa%20comprar%20el%20producto:%20${encodeURIComponent(product.name)}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Pedir por WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // Función para filtrar categorías
+        function filterCategory(cat) {
+            if (cat === 'todos') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === cat);
+                renderProducts(filtered);
+            }
+        }
+
+        // Cargar productos al abrir la página
+        renderProducts(products);
+    </script>
+</body>
+</html>
