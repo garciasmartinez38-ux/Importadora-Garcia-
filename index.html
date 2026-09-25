@@ -18,7 +18,7 @@
         </div>
     </nav>
 
-    <!-- Encabezado / Banner -->
+    <!-- Banner -->
     <header class="bg-black text-white text-center py-12 px-4">
         <h2 class="text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
         <p class="text-gray-400 mt-2">Productos de alta calidad al mejor precio.</p>
@@ -26,20 +26,27 @@
 
     <!-- Catálogo de Productos -->
     <main class="max-w-6xl mx-auto py-10 px-4">
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Los productos se cargan dinámicamente aquí -->
-        </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
-    <!-- Código de Productos y Funcionalidad -->
+    <!-- VISOR A PANTALLA COMPLETA (MODAL) -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4" onclick="closeModal()">
+        <div class="relative max-w-3xl max-h-[90vh] flex items-center justify-center">
+            <!-- Botón para cerrar -->
+            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-gray-300">&times;</button>
+            <!-- Imagen Ampliada -->
+            <img id="modal-img" src="" alt="Imagen ampliada" class="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Script principal -->
     <script>
-        // LISTA DE PRODUCTOS CON TUS 6 FOTOS SUBIDAS
         const products = [
             {
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
-                category: "colores",
-                price: 5,
+                category: "accesorios",
+                price: 25,
                 images: [
                     "./Termos.png",
                     "./Termo1.png",
@@ -52,7 +59,6 @@
             }
         ];
 
-        // Función para renderizar las tarjetas y las miniaturas
         function renderProducts(items) {
             const container = document.getElementById('product-grid');
             container.innerHTML = '';
@@ -63,13 +69,16 @@
                     thumbnailsHTML += `
                         <img src="${img}" 
                              onclick="changeImage(${product.id}, '${img}')" 
-                             class="w-12 h-12 object-cover rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2">
+                             class="w-12 h-12 object-contain rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2 bg-gray-50">
                     `;
                 });
 
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
-                        <img id="main-img-${product.id}" src="${product.images[0]}" alt="${product.name}" class="w-full h-64 object-cover">
+                        <!-- Imagen principal: al hacer clic se abre ampliada -->
+                        <div class="w-full h-64 bg-gray-50 flex items-center justify-center p-2 cursor-zoom-in" onclick="openModal(document.getElementById('main-img-${product.id}').src)">
+                            <img id="main-img-${product.id}" src="${product.images[0]}" alt="${product.name}" class="max-h-full max-w-full object-contain">
+                        </div>
                         
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
@@ -93,12 +102,27 @@
             });
         }
 
-        // Función para cambiar la foto principal al hacer clic en una miniatura
+        // Cambiar la foto principal con las miniaturas
         function changeImage(productId, newSrc) {
             document.getElementById(`main-img-${productId}`).src = newSrc;
         }
 
-        // Filtrado por categoría
+        // Funciones para abrir y cerrar la foto ampliada
+        function openModal(imgSrc) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = imgSrc;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Filtro por categorías
         function filterCategory(cat) {
             if (cat === 'todos') {
                 renderProducts(products);
@@ -108,7 +132,6 @@
             }
         }
 
-        // Carga inicial
         renderProducts(products);
     </script>
 </body>
