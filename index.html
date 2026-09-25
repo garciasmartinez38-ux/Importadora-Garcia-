@@ -34,9 +34,7 @@
     <!-- VISOR A PANTALLA COMPLETA (MODAL) -->
     <div id="image-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4" onclick="closeModal()">
         <div class="relative max-w-3xl max-h-[90vh] flex items-center justify-center">
-            <!-- Botón para cerrar -->
             <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-gray-300">&times;</button>
-            <!-- Imagen Ampliada -->
             <img id="modal-img" src="" alt="Imagen ampliada" class="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl">
         </div>
     </div>
@@ -47,15 +45,15 @@
             {
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
-                category: "uso diario",
+                category: "uso Diario",
                 price: 5,
                 images: [
                     "./Termos.png",
-                    "./Termo1.png",
-                    "./Termo2.png",
-                    "./Termo3.png",
-                    "./Termo4.png",
-                    "./Termo5.png"
+                    "./Termos1.png",
+                    "./Termos2.png",
+                    "./Termos3.png",
+                    "./Termos4.png",
+                    "./Termos5.png"
                 ],
                 description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño."
             },
@@ -65,11 +63,11 @@
                 category: "pijamas",
                 price: 5,
                 images: [
-                    "./pijama1.jpg",
-                    "./pijama2.jpg",
-                    "./pijama3.jpg",
-                    "./pijama4.jpg",
-                    "./pijama5.jpg"
+                    "./pijama1.png",
+                    "./pijama2.png",
+                    "./pijama3.png",
+                    "./pijama4.png",
+                    "./pijama5.png"
                 ],
                 description: "Pijama ultra suave y cómoda, ideal para noches frescas. Tela de alta calidad."
             },
@@ -94,21 +92,20 @@
                 product.images.forEach((img) => {
                     thumbnailsHTML += `
                         <img src="${img}" 
-                             onclick="changeImage(${product.id}, '${img}')" 
+                             onerror="handleImageError(this, '${img}')"
+                             onclick="changeImage(${product.id}, this.src)" 
                              class="w-12 h-12 object-contain rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2 bg-gray-50">
                     `;
                 });
 
-                // Número de WhatsApp configurado (+503 6967 9021)
                 const phone = "50369679021";
                 const message = encodeURIComponent(`Hola, me interesa comprar el producto: ${product.name}`);
                 const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
-                        <!-- Imagen principal: al hacer clic se abre ampliada -->
                         <div class="w-full h-64 bg-gray-50 flex items-center justify-center p-2 cursor-zoom-in" onclick="openModal(document.getElementById('main-img-${product.id}').src)">
-                            <img id="main-img-${product.id}" src="${product.images[0]}" alt="${product.name}" class="max-h-full max-w-full object-contain">
+                            <img id="main-img-${product.id}" src="${product.images[0]}" onerror="handleImageError(this, '${product.images[0]}')" alt="${product.name}" class="max-h-full max-w-full object-contain">
                         </div>
                         
                         <div class="p-5 flex-1 flex flex-col justify-between">
@@ -125,7 +122,7 @@
                             <div class="mt-4 flex items-center justify-between">
                                 <span class="text-xl font-extrabold">$${product.price}</span>
                                 <a href="${whatsappUrl}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition flex items-center gap-2">
-                                    <i class="fab font-bold"></i> Pedir por WhatsApp
+                                    Pedir por WhatsApp
                                 </a>
                             </div>
                         </div>
@@ -133,6 +130,20 @@
                 `;
                 container.innerHTML += card;
             });
+        }
+
+        // Si la imagen falla (por ejemplo con .png), el sistema intentará probar con .jpeg y .jpg automáticamente
+        function handleImageError(imgElement, originalSrc) {
+            if (!imgElement.dataset.triedJpeg) {
+                imgElement.dataset.triedJpeg = "true";
+                imgElement.src = originalSrc.replace(/\.png$/i, '.jpeg');
+            } else if (!imgElement.dataset.triedJpg) {
+                imgElement.dataset.triedJpg = "true";
+                imgElement.src = originalSrc.replace(/\.jpeg$/i, '.jpg');
+            } else if (!imgElement.dataset.noSpace) {
+                imgElement.dataset.noSpace = "true";
+                imgElement.src = originalSrc.replace(/\s+/g, '');
+            }
         }
 
         function changeImage(productId, newSrc) {
