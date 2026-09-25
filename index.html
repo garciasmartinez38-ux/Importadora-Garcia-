@@ -45,7 +45,7 @@
             {
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
-                category: "uso Diario",
+                category: "accesorios",
                 price: 5,
                 images: [
                     "./Termos.png",
@@ -63,11 +63,11 @@
                 category: "pijamas",
                 price: 5,
                 images: [
-                    "./pijama1.png",
-                    "./pijama2.png",
-                    "./pijama3.png",
-                    "./pijama4.png",
-                    "./pijama5.png"
+                    "./pijama1.jpeg",
+                    "./pijama2.jpeg",
+                    "./pijama3.jpeg",
+                    "./pijama4.jpeg",
+                    "./pijama5.jpeg"
                 ],
                 description: "Pijama ultra suave y cómoda, ideal para noches frescas. Tela de alta calidad."
             },
@@ -92,7 +92,7 @@
                 product.images.forEach((img) => {
                     thumbnailsHTML += `
                         <img src="${img}" 
-                             onerror="handleImageError(this, '${img}')"
+                             onerror="tryAlternativeFormats(this, '${img}')"
                              onclick="changeImage(${product.id}, this.src)" 
                              class="w-12 h-12 object-contain rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2 bg-gray-50">
                     `;
@@ -105,7 +105,7 @@
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
                         <div class="w-full h-64 bg-gray-50 flex items-center justify-center p-2 cursor-zoom-in" onclick="openModal(document.getElementById('main-img-${product.id}').src)">
-                            <img id="main-img-${product.id}" src="${product.images[0]}" onerror="handleImageError(this, '${product.images[0]}')" alt="${product.name}" class="max-h-full max-w-full object-contain">
+                            <img id="main-img-${product.id}" src="${product.images[0]}" onerror="tryAlternativeFormats(this, '${product.images[0]}')" alt="${product.name}" class="max-h-full max-w-full object-contain">
                         </div>
                         
                         <div class="p-5 flex-1 flex flex-col justify-between">
@@ -132,16 +132,19 @@
             });
         }
 
-        // Si la imagen falla (por ejemplo con .png), el sistema intentará probar con .jpeg y .jpg automáticamente
-        function handleImageError(imgElement, originalSrc) {
-            if (!imgElement.dataset.triedJpeg) {
-                imgElement.dataset.triedJpeg = "true";
-                imgElement.src = originalSrc.replace(/\.png$/i, '.jpeg');
-            } else if (!imgElement.dataset.triedJpg) {
-                imgElement.dataset.triedJpg = "true";
-                imgElement.src = originalSrc.replace(/\.jpeg$/i, '.jpg');
-            } else if (!imgElement.dataset.noSpace) {
-                imgElement.dataset.noSpace = "true";
+        // Intenta alternativas (.jpg, .png, o sin espacios) si .jpeg no responde
+        function tryAlternativeFormats(imgElement, originalSrc) {
+            if (!imgElement.dataset.step) {
+                imgElement.dataset.step = "1";
+                // Prueba cambiando .jpeg a .jpg
+                imgElement.src = originalSrc.replace(/\.jpeg$/i, '.jpg').replace(/\.png$/i, '.jpg');
+            } else if (imgElement.dataset.step === "1") {
+                imgElement.dataset.step = "2";
+                // Prueba cambiando a .png
+                imgElement.src = originalSrc.replace(/\.(jpeg|jpg)$/i, '.png');
+            } else if (imgElement.dataset.step === "2") {
+                imgElement.dataset.step = "3";
+                // Prueba removiendo espacios por si se subió como pijama1.jpeg
                 imgElement.src = originalSrc.replace(/\s+/g, '');
             }
         }
@@ -176,4 +179,4 @@
         renderProducts(products);
     </script>
 </body>
-    </html>
+</html>
