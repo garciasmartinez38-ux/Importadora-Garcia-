@@ -9,21 +9,21 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-900">
 
-    <!-- Navegación -->
-    <nav class="bg-black text-white p-4 flex flex-wrap justify-between items-center px-6 gap-2">
+    <!-- Navegación por categorías -->
+    <nav class="bg-black text-white p-4 flex flex-wrap justify-between items-center px-6 gap-2 sticky top-0 z-40 shadow-lg">
         <h1 class="text-xl font-bold tracking-widest">IMPORTADORA GARCÍA</h1>
         <div class="space-x-2 sm:space-x-4 text-sm sm:text-base">
-            <button onclick="filterCategory('todos')" class="hover:text-gray-400">Todos</button>
-            <button onclick="filterCategory('accesorios')" class="hover:text-gray-400">Termos</button>
-            <button onclick="filterCategory('pijamas')" class="hover:text-gray-400">Pijamas</button>
-            <button onclick="filterCategory('calcetines')" class="hover:text-gray-400">Calcetines</button>
+            <button onclick="filterCategory('todos')" class="hover:text-gray-400 px-2 py-1">Todos</button>
+            <button onclick="filterCategory('termos')" class="hover:text-gray-400 px-2 py-1">Termos</button>
+            <button onclick="filterCategory('pijamas')" class="hover:text-gray-400 px-2 py-1">Pijamas</button>
+            <button onclick="filterCategory('calcetines')" class="hover:text-gray-400 px-2 py-1">Calcetines</button>
         </div>
     </nav>
 
-    <!-- Banner -->
-    <header class="bg-black text-white text-center py-12 px-4 border-t border-gray-800">
-        <h2 class="text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
-        <p class="text-gray-400 mt-2">Productos de alta calidad al mejor precio.</p>
+    <!-- Encabezado / Banner -->
+    <header class="bg-black text-white text-center py-10 px-4 border-t border-gray-800">
+        <h2 class="text-3xl sm:text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
+        <p class="text-gray-400 mt-2 text-sm sm:text-base">Todo lo que quieras al alcance de un clic</p>
     </header>
 
     <!-- Catálogo de Productos -->
@@ -45,7 +45,7 @@
             {
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
-                category: "accesorios",
+                category: "termos",
                 price: 5,
                 images: [
                     "./Termos.png",
@@ -55,7 +55,7 @@
                     "./Termo4.png",
                     "./Termo5.png"
                 ],
-                description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño."
+                description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño moderno."
             },
             {
                 id: 2,
@@ -69,7 +69,7 @@
                     "./pijama4.jpeg",
                     "./pijama5.jpeg"
                 ],
-                description: "Pijama ultra suave y cómoda, ideal para noches frescas. Tela de alta calidad."
+                description: "Pijama ultra suave y cómoda, ideal para descansar y para noches frescas. Tela de alta calidad."
             },
             {
                 id: 3,
@@ -79,7 +79,7 @@
                 images: [
                     "./Medias1.png"
                 ],
-                description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad."
+                description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad para uso diario."
             }
         ];
 
@@ -92,8 +92,7 @@
                 product.images.forEach((img) => {
                     thumbnailsHTML += `
                         <img src="${img}" 
-                             onerror="tryAlternativeFormats(this, '${img}')"
-                             onclick="changeImage(${product.id}, this.src)" 
+                             onclick="changeImage(${product.id}, '${img}')" 
                              class="w-12 h-12 object-contain rounded border border-gray-300 hover:border-black cursor-pointer mr-2 mt-2 bg-gray-50">
                     `;
                 });
@@ -105,12 +104,12 @@
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
                         <div class="w-full h-64 bg-gray-50 flex items-center justify-center p-2 cursor-zoom-in" onclick="openModal(document.getElementById('main-img-${product.id}').src)">
-                            <img id="main-img-${product.id}" src="${product.images[0]}" onerror="tryAlternativeFormats(this, '${product.images[0]}')" alt="${product.name}" class="max-h-full max-w-full object-contain">
+                            <img id="main-img-${product.id}" src="${product.images[0]}" alt="${product.name}" class="max-h-full max-w-full object-contain">
                         </div>
                         
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
-                                <span class="text-xs uppercase bg-gray-200 text-gray-700 px-2 py-1 rounded">${product.category}</span>
+                                <span class="text-xs uppercase bg-gray-200 text-gray-700 px-2 py-1 rounded font-semibold">${product.category}</span>
                                 <h3 class="text-lg font-bold mt-2">${product.name}</h3>
                                 
                                 <div class="flex flex-wrap my-2">
@@ -121,8 +120,8 @@
                             </div>
                             <div class="mt-4 flex items-center justify-between">
                                 <span class="text-xl font-extrabold">$${product.price}</span>
-                                <a href="${whatsappUrl}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition flex items-center gap-2">
-                                    Pedir por WhatsApp
+                                <a href="${whatsappUrl}" target="_blank" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition flex items-center gap-2 text-sm font-medium">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i> Pedir por WhatsApp
                                 </a>
                             </div>
                         </div>
@@ -130,23 +129,6 @@
                 `;
                 container.innerHTML += card;
             });
-        }
-
-        // Intenta alternativas (.jpg, .png, o sin espacios) si .jpeg no responde
-        function tryAlternativeFormats(imgElement, originalSrc) {
-            if (!imgElement.dataset.step) {
-                imgElement.dataset.step = "1";
-                // Prueba cambiando .jpeg a .jpg
-                imgElement.src = originalSrc.replace(/\.jpeg$/i, '.jpg').replace(/\.png$/i, '.jpg');
-            } else if (imgElement.dataset.step === "1") {
-                imgElement.dataset.step = "2";
-                // Prueba cambiando a .png
-                imgElement.src = originalSrc.replace(/\.(jpeg|jpg)$/i, '.png');
-            } else if (imgElement.dataset.step === "2") {
-                imgElement.dataset.step = "3";
-                // Prueba removiendo espacios por si se subió como pijama1.jpeg
-                imgElement.src = originalSrc.replace(/\s+/g, '');
-            }
         }
 
         function changeImage(productId, newSrc) {
@@ -179,4 +161,4 @@
         renderProducts(products);
     </script>
 </body>
-</html>
+    </html>
