@@ -7,27 +7,73 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans text-gray-900">
+<body class="bg-gray-100 font-sans text-gray-900 min-h-screen flex flex-col justify-between">
 
-    <!-- Navegación por categorías -->
-    <nav class="bg-black text-white p-4 flex flex-wrap justify-between items-center px-6 gap-2 sticky top-0 z-40 shadow-lg">
-        <h1 class="text-xl font-bold tracking-widest">IMPORTADORA GARCÍA</h1>
-        <div class="space-x-2 sm:space-x-4 text-sm sm:text-base">
-            <button onclick="filterCategory('todos')" class="hover:text-gray-400 px-2 py-1">Todos</button>
-            <button onclick="filterCategory('termos')" class="hover:text-gray-400 px-2 py-1">Termos</button>
-            <button onclick="filterCategory('pijamas')" class="hover:text-gray-400 px-2 py-1">Pijamas</button>
-            <button onclick="filterCategory('calcetines')" class="hover:text-gray-400 px-2 py-1">Calcetines</button>
-        </div>
+    <!-- Navegación Superior -->
+    <nav class="bg-black text-white p-4 flex justify-between items-center px-6 sticky top-0 z-40 shadow-lg">
+        <h1 class="text-xl font-bold tracking-widest cursor-pointer" onclick="filterCategory('todos')">IMPORTADORA GARCÍA</h1>
+        
+        <!-- Botón de Menú Hamburguesa (3 rayas) -->
+        <button onclick="toggleMenu()" class="text-2xl focus:outline-none p-1 hover:text-gray-300">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
+
+    <!-- Menú Lateral Desplegable (Drawer / Sidebar) -->
+    <div id="side-menu" class="fixed inset-y-0 right-0 w-72 bg-black text-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl p-6 flex flex-col justify-between">
+        <div>
+            <!-- Encabezado del menú con botón para cerrar -->
+            <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
+                <h3 class="text-lg font-bold uppercase tracking-wider">Categorías</h3>
+                <button onclick="toggleMenu()" class="text-2xl text-gray-400 hover:text-white">&times;</button>
+            </div>
+
+            <!-- Lista de Categorías -->
+            <div class="flex flex-col space-y-3 font-medium">
+                <button onclick="selectCategory('todos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-th-large text-gray-400"></i> Todos los productos
+                </button>
+                <button onclick="selectCategory('termos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-mug-hot text-gray-400"></i> Termos
+                </button>
+                <button onclick="selectCategory('pijamas')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-bed text-gray-400"></i> Pijamas
+                </button>
+                <button onclick="selectCategory('calcetines')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-socks text-gray-400"></i> Calcetines
+                </button>
+                <button onclick="selectCategory('ropa')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-tshirt text-gray-400"></i> Ropa
+                </button>
+                <button onclick="selectCategory('calzado')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-shoe-prints text-gray-400"></i> Calzado para el hogar
+                </button>
+                <button onclick="selectCategory('herramientas')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-tools text-gray-400"></i> Herramientas
+                </button>
+                <button onclick="selectCategory('peluches')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-paw text-gray-400"></i> Peluches
+                </button>
+            </div>
+        </div>
+
+        <!-- Pie del menú -->
+        <div class="border-t border-gray-800 pt-4 text-xs text-gray-500 text-center">
+            Importadora García &copy; 2026
+        </div>
+    </div>
+
+    <!-- Fondo Oscuro para cuando el Menú esté Abierto -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
 
     <!-- Encabezado / Banner -->
     <header class="bg-black text-white text-center py-10 px-4 border-t border-gray-800">
-        <h2 class="text-3xl sm:text-4xl font-extrabold uppercase">Catálogo Oficial</h2>
+        <h2 id="category-title" class="text-3xl sm:text-4xl font-extrabold uppercase tracking-wide">Catálogo Oficial</h2>
         <p class="text-gray-400 mt-2 text-sm sm:text-base">Todo lo que quieras al alcance de un clic</p>
     </header>
 
     <!-- Catálogo de Productos -->
-    <main class="max-w-6xl mx-auto py-10 px-4">
+    <main class="max-w-6xl mx-auto py-10 px-4 flex-1 w-full">
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
@@ -46,7 +92,7 @@
                 id: 1,
                 name: "Termo Térmico de Acero Inoxidable",
                 category: "termos",
-                price: 5,
+                price: 7.50,
                 images: [
                     "./Termos.png",
                     "./Termo1.png",
@@ -81,12 +127,23 @@
                 ],
                 description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad para uso diario."
             }
+            /* Aquí puedes ir agregando tus productos de Ropa, Calzado, Herramientas, Peluches, etc. */
         ];
 
         function renderProducts(items) {
             const container = document.getElementById('product-grid');
             container.innerHTML = '';
             
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <i class="fas fa-box-open text-5xl mb-3"></i>
+                        <p class="text-lg font-medium">Próximamente agregaremos productos en esta categoría.</p>
+                    </div>
+                `;
+                return;
+            }
+
             items.forEach(product => {
                 let thumbnailsHTML = '';
                 product.images.forEach((img) => {
@@ -149,10 +206,27 @@
             modal.classList.remove('flex');
         }
 
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('menu-overlay');
+            
+            menu.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function selectCategory(cat) {
+            toggleMenu(); // Cierra el menú lateral al seleccionar
+            filterCategory(cat);
+        }
+
         function filterCategory(cat) {
+            const titleElement = document.getElementById('category-title');
+            
             if (cat === 'todos') {
+                titleElement.textContent = "Catálogo Oficial";
                 renderProducts(products);
             } else {
+                titleElement.textContent = cat.toUpperCase();
                 const filtered = products.filter(p => p.category === cat);
                 renderProducts(filtered);
             }
