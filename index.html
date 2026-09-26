@@ -33,8 +33,11 @@
                 <button onclick="selectCategory('todos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
                     <i class="fas fa-th-large text-gray-400"></i> Todos los productos
                 </button>
-                <button onclick="selectCategory('hogar')" class="text-left px-3 py-2 rounded bg-gray-800 text-white transition flex items-center gap-3">
-                    <i class="fas fa-home text-yellow-400"></i> Hogar / Artículos
+                <button onclick="selectCategory('hogar')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-home text-gray-400"></i> Hogar / Artículos
+                </button>
+                <button onclick="selectCategory('peluches')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+                    <i class="fas fa-paw text-gray-400"></i> Peluches
                 </button>
                 <button onclick="selectCategory('termos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
                     <i class="fas fa-mug-hot text-gray-400"></i> Termos
@@ -53,9 +56,6 @@
                 </button>
                 <button onclick="selectCategory('herramientas')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
                     <i class="fas fa-tools text-gray-400"></i> Herramientas
-                </button>
-                <button onclick="selectCategory('peluches')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
-                    <i class="fas fa-paw text-gray-400"></i> Peluches
                 </button>
             </div>
         </div>
@@ -92,42 +92,78 @@
         const products = [
             {
                 id: 1,
-                name: "Bocina Bluetooth para el Hogar",
+                name: "Batidora Eléctrica",
                 category: "hogar",
                 price: 15,
+                images: [
+                    "./batidora1.jpeg",
+                    "./batidora2.jpeg"
+                ],
+                description: "Práctica batidora de alta potencia ideal para la cocina en el hogar."
+            },
+            {
+                id: 2,
+                name: "Plancha para Ropa",
+                category: "hogar",
+                price: 15,
+                images: [
+                    "./plancha1.png",
+                    "./plancha2.png"
+                ],
+                description: "Plancha eficiente y de fácil manejo para un alisado perfecto."
+            },
+            {
+                id: 3,
+                name: "Colección de Peluches",
+                category: "peluches",
+                price: 10,
+                images: [
+                    "./peluche1.png",
+                    "./peluche2.jpeg",
+                    "./peluche3.jpeg",
+                    "./peluche4.jpeg",
+                    "./peluche5.jpeg"
+                ],
+                description: "Peluches suaves y de alta calidad, ideales para regalo o decoración."
+            },
+            {
+                id: 4,
+                name: "Bocina Bluetooth",
+                category: "hogar",
+                price: 5,
                 images: [
                     "./bocina1.jpeg",
                     "./bocina2.jpeg"
                 ],
-                description: "Excelente sonido y potencia para tu hogar. Conexión inalámbrica rápida y batería de larga duración."
+                description: "Excelente sonido y potencia para tu hogar. Conexión inalámbrica rápida."
             },
             {
-                id: 2,
-                name: "Luces Decorativas LED",
+                id: 5,
+                name: "Luces Navideñas LED",
                 category: "hogar",
-                price: 10,
+                price: 2,
                 images: [
                     "./luces1.jpeg",
                     "./luces2.jpeg"
                 ],
-                description: "Iluminación cálida e ideal para decorar habitaciones, espacios del hogar y eventos especiales."
+                description: "Iluminación cálida e ideal para decorar tus espacios."
             },
             {
-                id: 3,
+                id: 6,
                 name: "Power Bank / Batería Portátil",
                 category: "hogar",
-                price: 12,
+                price: 15,
                 images: [
                     "./powerbank.png",
                     "./powerbank1.jpeg"
                 ],
-                description: "Carga tus dispositivos en cualquier lugar. Diseño compacto, ligero y de carga rápida."
+                description: "Carga tus dispositivos en cualquier lugar. Diseño compacto y ligero."
             },
             {
-                id: 4,
-                name: "Termo Térmico de Acero Inoxidable",
+                id: 7,
+                name: "Termo Térmico de Botella",
                 category: "termos",
-                price: 25,
+                price: 10,
                 images: [
                     "./Termos.png",
                     "./Termo1.png",
@@ -136,13 +172,13 @@
                     "./Termo4.png",
                     "./Termo5.png"
                 ],
-                description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño moderno."
+                description: "Mantiene tus bebidas frías o calientes por mucho tiempo."
             },
             {
-                id: 5,
-                name: "Pijama Térmica de Algodón",
+                id: 8,
+                name: "Pijama Térmica",
                 category: "pijamas",
-                price: 18,
+                price: 5,
                 images: [
                     "./pijama1.jpeg",
                     "./pijama2.jpeg",
@@ -150,17 +186,17 @@
                     "./pijama4.jpeg",
                     "./pijama5.jpeg"
                 ],
-                description: "Pijama ultra suave y cómoda, ideal para descansar y para noches frescas. Tela de alta calidad."
+                description: "Pijama ultra suave y cómoda, ideal para un excelente descanso."
             },
             {
-                id: 6,
-                name: "Pack de Calcetines Afelpados",
+                id: 9,
+                name: "Pack de Calcetines",
                 category: "calcetines",
-                price: 8,
+                price: 1,
                 images: [
                     "./Medias1.png"
                 ],
-                description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad para uso diario."
+                description: "Calcetines cómodos y de ajuste suave para uso diario."
             }
         ];
 
@@ -269,4 +305,4 @@
         renderProducts(products);
     </script>
 </body>
-</html>
+        </html>
