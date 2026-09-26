@@ -19,10 +19,10 @@
         </button>
     </nav>
 
-    <!-- Menú Lateral Desplegable (Drawer / Sidebar) -->
+    <!-- Menú Lateral Desplegable (Sidebar) -->
     <div id="side-menu" class="fixed inset-y-0 right-0 w-72 bg-black text-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl p-6 flex flex-col justify-between">
         <div>
-            <!-- Encabezado del menú con botón para cerrar -->
+            <!-- Encabezado del menú -->
             <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
                 <h3 class="text-lg font-bold uppercase tracking-wider">Categorías</h3>
                 <button onclick="toggleMenu()" class="text-2xl text-gray-400 hover:text-white">&times;</button>
@@ -32,6 +32,9 @@
             <div class="flex flex-col space-y-3 font-medium">
                 <button onclick="selectCategory('todos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
                     <i class="fas fa-th-large text-gray-400"></i> Todos los productos
+                </button>
+                <button onclick="selectCategory('hogar')" class="text-left px-3 py-2 rounded bg-gray-800 text-white transition flex items-center gap-3">
+                    <i class="fas fa-home text-yellow-400"></i> Hogar / Artículos
                 </button>
                 <button onclick="selectCategory('termos')" class="text-left px-3 py-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
                     <i class="fas fa-mug-hot text-gray-400"></i> Termos
@@ -57,13 +60,12 @@
             </div>
         </div>
 
-        <!-- Pie del menú -->
         <div class="border-t border-gray-800 pt-4 text-xs text-gray-500 text-center">
             Importadora García &copy; 2026
         </div>
     </div>
 
-    <!-- Fondo Oscuro para cuando el Menú esté Abierto -->
+    <!-- Fondo Oscuro del Menú -->
     <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
 
     <!-- Encabezado / Banner -->
@@ -90,9 +92,42 @@
         const products = [
             {
                 id: 1,
+                name: "Bocina Bluetooth para el Hogar",
+                category: "hogar",
+                price: 15,
+                images: [
+                    "./bocina1.jpeg",
+                    "./bocina2.jpeg"
+                ],
+                description: "Excelente sonido y potencia para tu hogar. Conexión inalámbrica rápida y batería de larga duración."
+            },
+            {
+                id: 2,
+                name: "Luces Decorativas LED",
+                category: "hogar",
+                price: 10,
+                images: [
+                    "./luces1.jpeg",
+                    "./luces2.jpeg"
+                ],
+                description: "Iluminación cálida e ideal para decorar habitaciones, espacios del hogar y eventos especiales."
+            },
+            {
+                id: 3,
+                name: "Power Bank / Batería Portátil",
+                category: "hogar",
+                price: 12,
+                images: [
+                    "./powerbank.png",
+                    "./powerbank1.jpeg"
+                ],
+                description: "Carga tus dispositivos en cualquier lugar. Diseño compacto, ligero y de carga rápida."
+            },
+            {
+                id: 4,
                 name: "Termo Térmico de Acero Inoxidable",
                 category: "termos",
-                price: 7.50,
+                price: 25,
                 images: [
                     "./Termos.png",
                     "./Termo1.png",
@@ -104,10 +139,10 @@
                 description: "Mantiene tus bebidas frías o calientes durante todo el día. Excelente durabilidad y diseño moderno."
             },
             {
-                id: 2,
+                id: 5,
                 name: "Pijama Térmica de Algodón",
                 category: "pijamas",
-                price: 5,
+                price: 18,
                 images: [
                     "./pijama1.jpeg",
                     "./pijama2.jpeg",
@@ -118,16 +153,15 @@
                 description: "Pijama ultra suave y cómoda, ideal para descansar y para noches frescas. Tela de alta calidad."
             },
             {
-                id: 3,
+                id: 6,
                 name: "Pack de Calcetines Afelpados",
                 category: "calcetines",
-                price: 1,
+                price: 8,
                 images: [
                     "./Medias1.png"
                 ],
                 description: "Calcetines acojinados y térmicos, excelente ajuste y máxima comodidad para uso diario."
             }
-            /* Aquí puedes ir agregando tus productos de Ropa, Calzado, Herramientas, Peluches, etc. */
         ];
 
         function renderProducts(items) {
@@ -215,7 +249,7 @@
         }
 
         function selectCategory(cat) {
-            toggleMenu(); // Cierra el menú lateral al seleccionar
+            toggleMenu();
             filterCategory(cat);
         }
 
@@ -235,4 +269,4 @@
         renderProducts(products);
     </script>
 </body>
-    </html>
+</html>
